@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: maisaedu-postgres
+    environment:
+      POSTGRES_USER: maisaedu
+      POSTGRES_PASSWORD: maisaedu
+      POSTGRES_DB: maisaedu
+    ports:
+      - '5432:5432'
