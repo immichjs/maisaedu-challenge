@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
+import { StudentModule } from './modules/student/student.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { DataSourceOptions } from 'typeorm';
 				return databaseConfig;
 			},
 		}),
+		StudentModule,
 	],
 })
 export class AppModule {}

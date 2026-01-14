@@ -1,0 +1,16 @@
+export class Name {
+	constructor(private readonly _value: string) {}
+
+	public static create(value: string): Name {
+		const normalized = value.trim();
+		return new Name(normalized);
+	}
+
+	get value() {
+		return this._value;
+	}
+
+	public equals(other: Name): boolean {
+		return this._value === other._value;
+	}
+}
