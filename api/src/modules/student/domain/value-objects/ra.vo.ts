@@ -16,4 +16,8 @@ export class Ra {
 	get value(): string {
 		return this._value;
 	}
+
+	public equals(other: Ra): boolean {
+		return this._value === other._value;
+	}
 }

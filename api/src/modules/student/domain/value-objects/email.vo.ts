@@ -11,7 +11,7 @@ export class Email {
 			throw new InvalidStudentEmailError(normalized);
 		}
 
-		return new Email(value.trim());
+		return new Email(normalized);
 	}
 
 	get value(): string {
