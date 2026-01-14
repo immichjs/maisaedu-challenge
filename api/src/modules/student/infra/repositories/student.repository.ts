@@ -1,6 +1,7 @@
 import { IPaginated } from '@common/pagination/paginated';
 import { Student } from '@modules/student/domain/entities/student';
-import { StudentSearchCriteria } from '@modules/student/domain/repositories/search/student-search-criteria';
+import { StudentSearchCriteria } from '@modules/student/domain/repositories/constraints/student-search-criteria';
+import { StudentUniqueField } from '@modules/student/domain/repositories/constraints/student-unique-field';
 import { IStudentRepository } from '@modules/student/domain/repositories/student.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -74,6 +75,15 @@ export class StudentRepository implements IStudentRepository {
 		if (!entity) return null;
 
 		return StudentMapper.toDomain(entity);
+	}
+
+	public async existsBy(
+		field: StudentUniqueField,
+		value: string,
+	): Promise<boolean> {
+		return this.repository.exists({
+			where: { [field]: value },
+		});
 	}
 
 	public async save(student: Student): Promise<Student> {

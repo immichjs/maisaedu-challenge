@@ -11,10 +11,11 @@ const config: DataSourceOptions = {
 	username: process.env.DB_USERNAME ?? 'postgres',
 	password: process.env.DB_PASSWORD ?? 'postgres',
 	database: process.env.DB_NAME ?? 'postgres',
-	entities: [__dirname + '../modules/**/infra/entities/*{.ts,.js}'],
-	migrations: [__dirname + '../infra/typeorm/migrations/*{.ts,.js}'],
+	entities: [__dirname + '/../modules/**/infra/entities/*.entity.{.ts,.js}'],
+	migrations: [__dirname + '/../infra/typeorm/migrations/*{.ts,.js}'],
 	synchronize: false,
 	migrationsRun: true,
+	logging: true,
 };
 
 export const databaseConfig = registerAs('database', () => config);

@@ -1,10 +1,11 @@
+import { randomUUID } from 'crypto';
 import { Cpf } from '../value-objects/cpf.vo';
 import { Email } from '../value-objects/email.vo';
 import { Name } from '../value-objects/name.vo';
 import { Ra } from '../value-objects/ra.vo';
 
 interface IStudentProps {
-	id: string;
+	id?: string;
 	name: string;
 	email: string;
 	cpf: string;
@@ -22,7 +23,7 @@ export class Student {
 
 	public static create(props: IStudentProps): Student {
 		return new Student(
-			props.id,
+			props.id ?? randomUUID(),
 			Name.create(props.name),
 			Email.create(props.email),
 			Cpf.create(props.cpf),

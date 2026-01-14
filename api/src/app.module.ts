@@ -1,8 +1,7 @@
 import { databaseConfig, envValidationSchema, jwtConfig } from '@config/index';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceOptions } from 'typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { StudentModule } from './modules/student/student.module';
 
 @Module({
@@ -16,7 +15,8 @@ import { StudentModule } from './modules/student/student.module';
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: (configService: ConfigService) => {
-				const databaseConfig = configService.get<DataSourceOptions>('database');
+				const databaseConfig =
+					configService.get<TypeOrmModuleOptions>('database');
 
 				if (!databaseConfig) {
 					throw new Error(
@@ -24,7 +24,7 @@ import { StudentModule } from './modules/student/student.module';
 					);
 				}
 
-				return databaseConfig;
+				return { ...databaseConfig, autoLoadEntities: true };
 			},
 		}),
 		StudentModule,
