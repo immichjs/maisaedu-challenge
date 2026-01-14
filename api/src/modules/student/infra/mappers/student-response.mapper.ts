@@ -9,6 +9,8 @@ export class StudentResponseMapper {
 			email: student.email,
 			cpf: student.cpf,
 			ra: student.ra,
+			createdAt: student.createdAt,
+			updatedAt: student.updatedAt,
 		};
 	}
 }

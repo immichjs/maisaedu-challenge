@@ -13,6 +13,8 @@ export class StudentMapper {
 			Email.create(entity.email),
 			Cpf.create(entity.cpf),
 			Ra.create(entity.ra),
+			entity.createdAt,
+			entity.updatedAt,
 		);
 	}
 
@@ -24,6 +26,8 @@ export class StudentMapper {
 		entity.email = student.email;
 		entity.cpf = student.cpf;
 		entity.ra = student.ra;
+		entity.createdAt = student.createdAt;
+		entity.updatedAt = student.updatedAt;
 
 		return entity;
 	}

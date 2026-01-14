@@ -4,4 +4,6 @@ export class StudentReponseDto {
 	email: string;
 	cpf: string;
 	ra: string;
+	createdAt: Date;
+	updatedAt: Date;
 }

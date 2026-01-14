@@ -2,10 +2,6 @@ import { StudentEntity } from '../entities/student.entity';
 import { StudentMapper } from './student.mapper';
 
 import { Student } from '../../domain/entities/student';
-import { Cpf } from '../../domain/value-objects/cpf.vo';
-import { Email } from '../../domain/value-objects/email.vo';
-import { Name } from '../../domain/value-objects/name.vo';
-import { Ra } from '../../domain/value-objects/ra.vo';
 
 describe('StudentMapper', () => {
 	it('should map entity to domain correctly', () => {
@@ -27,13 +23,17 @@ describe('StudentMapper', () => {
 	});
 
 	it('should map domain to entity correctly', () => {
-		const student = new Student(
-			'c3a759a3-92fa-484d-8b7d-0a5bd83fdb9c',
-			Name.create('John Doe'),
-			Email.create('JOHN.DOE@EXAMPLE.COM'),
-			Cpf.create('123.456.789-01'),
-			Ra.create('a1b2c3'),
-		);
+		const now = new Date();
+
+		const student = Student.create({
+			id: 'c3a759a3-92fa-484d-8b7d-0a5bd83fdb9c',
+			name: 'John Doe',
+			email: 'JOHN.DOE@EXAMPLE.COM',
+			cpf: '123.456.789-01',
+			ra: 'a1b2c3',
+			createdAt: now,
+			updatedAt: now,
+		});
 
 		const entity = StudentMapper.toEntity(student);
 
@@ -43,5 +43,7 @@ describe('StudentMapper', () => {
 		expect(entity.email).toBe('john.doe@example.com');
 		expect(entity.cpf).toBe('12345678901');
 		expect(entity.ra).toBe('A1B2C3');
+		expect(entity.createdAt).toBe(now);
+		expect(entity.updatedAt).toBe(now);
 	});
 });

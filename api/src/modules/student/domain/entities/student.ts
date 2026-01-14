@@ -10,6 +10,8 @@ interface IStudentProps {
 	email: string;
 	cpf: string;
 	ra: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 export class Student {
@@ -19,15 +21,21 @@ export class Student {
 		private _email: Email,
 		private _cpf: Cpf,
 		private _ra: Ra,
+		private readonly _createdAt: Date,
+		private _updatedAt: Date,
 	) {}
 
 	public static create(props: IStudentProps): Student {
+		const now = new Date();
+
 		return new Student(
 			props.id ?? randomUUID(),
 			Name.create(props.name),
 			Email.create(props.email),
 			Cpf.create(props.cpf),
 			Ra.create(props.ra),
+			props.createdAt ?? now,
+			props.updatedAt ?? now,
 		);
 	}
 
@@ -51,11 +59,25 @@ export class Student {
 		return this._ra.value;
 	}
 
+	get createdAt(): Date {
+		return this._createdAt;
+	}
+
+	get updatedAt(): Date {
+		return this._updatedAt;
+	}
+
 	public changeName(newName: string): void {
 		this._name = Name.create(newName);
+		this.touch();
 	}
 
 	public changeEmail(newEmail: string): void {
 		this._email = Email.create(newEmail);
+		this.touch();
+	}
+
+	private touch(): void {
+		this._updatedAt = new Date();
 	}
 }
