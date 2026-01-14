@@ -1,6 +1,6 @@
-import { IPaginated } from '@common/interfaces/paginated.interface';
-import { IPagination } from '@common/interfaces/pagination.interface';
+import { IPaginated } from '@common/pagination/paginated';
 import { Student } from '@modules/student/domain/entities/student';
+import { StudentSearchCriteria } from '@modules/student/domain/repositories/search/student-search-criteria';
 import { IStudentRepository } from '@modules/student/domain/repositories/student.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,19 +13,50 @@ export class StudentRepository implements IStudentRepository {
 	@InjectRepository(StudentEntity)
 	private readonly repository: Repository<StudentEntity>;
 
-	public async find(pagination: IPagination): Promise<IPaginated<Student>> {
-		const { page, perPage } = pagination;
+	public async search(
+		criteria: StudentSearchCriteria,
+	): Promise<IPaginated<Student>> {
+		const { page, perPage } = criteria.pagination;
+		const { filter, sort } = criteria;
 
-		const [entities, total] = await this.repository.findAndCount({
-			skip: (page - 1) * perPage,
-			take: perPage,
-			order: { createdAt: 'DESC' },
-		});
+		const qb = this.repository.createQueryBuilder('student');
 
-		const items = entities.map((item) => StudentMapper.toDomain(item));
+		if (filter?.name) {
+			qb.andWhere('student.name ILIKE :name', {
+				name: `%${filter.name}%`,
+			});
+		}
+
+		if (filter?.email) {
+			qb.andWhere('student.email ILIKE :email', {
+				email: `%${filter.email}%`,
+			});
+		}
+
+		if (filter?.cpf) {
+			qb.andWhere('student.cpf = :cpf', {
+				cpf: filter.cpf,
+			});
+		}
+
+		if (filter?.ra) {
+			qb.andWhere('student.ra = :ra', {
+				ra: filter.ra,
+			});
+		}
+
+		if (sort) {
+			qb.orderBy(`student.${sort.field}`, sort.direction);
+		} else {
+			qb.orderBy('student.name', 'ASC');
+		}
+
+		qb.skip((page - 1) * perPage).take(perPage);
+
+		const [entities, total] = await qb.getManyAndCount();
 
 		return {
-			items,
+			items: entities.map((entity) => StudentMapper.toDomain(entity)),
 			meta: {
 				page,
 				perPage,
