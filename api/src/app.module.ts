@@ -1,6 +1,8 @@
 import { databaseConfig, envValidationSchema, jwtConfig } from '@config/index';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSourceOptions } from 'typeorm';
 
 @Module({
 	imports: [
@@ -8,6 +10,21 @@ import { ConfigModule } from '@nestjs/config';
 			isGlobal: true,
 			load: [databaseConfig, jwtConfig],
 			validationSchema: envValidationSchema,
+		}),
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) => {
+				const databaseConfig = configService.get<DataSourceOptions>('database');
+
+				if (!databaseConfig) {
+					throw new Error(
+						'Missing database configuration. Did you load databaseConfig?',
+					);
+				}
+
+				return databaseConfig;
+			},
 		}),
 	],
 })
