@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateStudentUseCase } from './application/use-cases/create-student.usecase';
+import { DeleteStudentUseCase } from './application/use-cases/delete-student.usecase';
 import { SearchStudentsUseCase } from './application/use-cases/search-students.usecase';
 import { STUDENT_REPOSITORY } from './domain/repositories/student.repository';
 import { StudentEntity } from './infra/entities/student.entity';
@@ -14,6 +15,7 @@ import { StudentController } from './presentation/student.controller';
 		{ provide: STUDENT_REPOSITORY, useClass: StudentRepository },
 		CreateStudentUseCase,
 		SearchStudentsUseCase,
+		DeleteStudentUseCase,
 	],
 })
 export class StudentModule {}
