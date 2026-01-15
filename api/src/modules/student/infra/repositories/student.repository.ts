@@ -5,7 +5,7 @@ import { StudentUniqueField } from '@modules/student/domain/repositories/constra
 import { IStudentRepository } from '@modules/student/domain/repositories/student.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { StudentEntity } from '../entities/student.entity';
 import { StudentMapper } from '../mappers/student.mapper';
 
@@ -18,32 +18,20 @@ export class StudentRepository implements IStudentRepository {
 		criteria: StudentSearchCriteria,
 	): Promise<IPaginated<Student>> {
 		const { page, perPage } = criteria.pagination;
-		const { filter, sort } = criteria;
+		const { q, sort } = criteria;
 
 		const qb = this.repository.createQueryBuilder('student');
 
-		if (filter?.name) {
-			qb.andWhere('student.name ILIKE :name', {
-				name: `%${filter.name}%`,
-			});
-		}
-
-		if (filter?.email) {
-			qb.andWhere('student.email ILIKE :email', {
-				email: `%${filter.email}%`,
-			});
-		}
-
-		if (filter?.cpf) {
-			qb.andWhere('student.cpf = :cpf', {
-				cpf: filter.cpf,
-			});
-		}
-
-		if (filter?.ra) {
-			qb.andWhere('student.ra = :ra', {
-				ra: filter.ra,
-			});
+		if (q) {
+			qb.andWhere(
+				new Brackets((qb) => {
+					qb.where('student.name ILIKE :q')
+						.orWhere('student.email ILIKE :q')
+						.orWhere('student.ra ILIKE :q')
+						.orWhere('student.cpf LIKE :q');
+				}),
+				{ q: `%${q}%` },
+			);
 		}
 
 		if (sort) {
@@ -57,7 +45,7 @@ export class StudentRepository implements IStudentRepository {
 		const [entities, total] = await qb.getManyAndCount();
 
 		return {
-			items: entities.map((entity) => StudentMapper.toDomain(entity)),
+			items: entities.map((student) => StudentMapper.toDomain(student)),
 			meta: {
 				page,
 				perPage,
