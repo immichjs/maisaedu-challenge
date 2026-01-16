@@ -1,8 +1,8 @@
-import { StudentReponseDto } from '@modules/student/application/dto/student-response.dto';
+import { StudentResponseDto } from '@modules/student/application/dto/student-response.dto';
 import { Student } from '../../domain/entities/student';
 
 export class StudentResponseMapper {
-	static toDto(student: Student): StudentReponseDto {
+	static toDto(student: Student): StudentResponseDto {
 		return {
 			id: student.id,
 			name: student.name,
