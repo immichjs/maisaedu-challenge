@@ -16,6 +16,7 @@ import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineConfig({
   plugins: [
     VueRouter({
+      routesFolder: ['src/pages'],
       dts: 'src/typed-router.d.ts',
     }),
     Layouts(),

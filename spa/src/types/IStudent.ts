@@ -4,6 +4,6 @@ export interface IStudent {
   email: string
   cpf: string
   ra: string
-  createAt: Date
+  createdAt: Date
   updatedAt: Date
 }
