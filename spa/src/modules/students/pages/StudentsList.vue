@@ -93,7 +93,7 @@
     />
   </v-toolbar>
 
-  <v-container>
+  <v-container class="px-12 pt-12" fluid>
     <StudentsHeader
       :search="search"
       @create="goToCreate"
