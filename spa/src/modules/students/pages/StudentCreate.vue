@@ -2,6 +2,7 @@
   import { useRouter } from 'vue-router'
   import { studentService } from '@/services/student.service'
   import { useUiStore } from '@/stores/ui.store'
+  import { formatCPFToForm } from '@/utils/formatters'
 
   const router = useRouter()
   const ui = useUiStore()
@@ -21,14 +22,6 @@
     form.value.ra = Array.from({ length: 6 })
       .map(() => chars[Math.floor(Math.random() * chars.length)])
       .join('')
-  }
-
-  function formatCPF (value: string) {
-    const digits = value.replace(/\D/g, '').slice(0, 11)
-    return digits
-      .replace(/^(\d{3})(\d)/, '$1.$2')
-      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-      .replace(/\.(\d{3})(\d)/, '.$1-$2')
   }
 
   function normalizeCPF (cpf: string) {
@@ -100,7 +93,7 @@
                 :rules="[
                   v => !!v || 'CPF obrigatório',
                 ]"
-                @input="form.cpf = formatCPF(form.cpf)"
+                @input="form.cpf = formatCPFToForm(form.cpf)"
               />
 
               <v-text-field

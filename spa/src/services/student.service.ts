@@ -28,7 +28,7 @@ export const studentService = {
   },
 
   async update (id: string, payload: Partial<IStudent>) {
-    const { data } = await api.put<IStudent>(`/students/${id}`, payload)
+    const { data } = await api.patch<IStudent>(`/students/${id}`, payload)
     return data
   },
 

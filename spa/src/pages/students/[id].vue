@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  const route = useRoute('/students/[id]')
-  const studentId = computed(() => route.params.id)
+  import StudentEdit from '@/modules/students/pages/StudentEdit.vue'
 
   definePage({
     meta: {
@@ -10,5 +9,5 @@
 </script>
 
 <template>
-  {{ studentId }}
+  <StudentEdit />
 </template>
