@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import type { IStudent } from '@/types/IStudent'
-  import { useTheme } from 'vuetify'
   import { studentService } from '@/services/student.service'
-  import StudentsHeader from '../components/StudentsHeader.vue'
-  import StudentsPagination from '../components/StudentsPagination.vue'
-  import StudentsTable from '../components/StudentsTable.vue'
+import type { IStudent } from '@/types/IStudent'
+import { useTheme } from 'vuetify'
+import StudentsHeader from '../components/StudentsHeader.vue'
+import StudentsPagination from '../components/StudentsPagination.vue'
+import StudentsTable from '../components/StudentsTable.vue'
 
   const router = useRouter()
   const theme = useTheme()
@@ -93,7 +93,7 @@
     />
   </v-toolbar>
 
-  <v-container>
+  <v-container fluid class="px-12 pt-12">
     <StudentsHeader
       :search="search"
       @create="goToCreate"

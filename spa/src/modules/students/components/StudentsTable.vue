@@ -9,12 +9,20 @@
   const emit = defineEmits<{
     (e: 'edit' | 'delete', student: IStudent): void
   }>()
+
+  const headers = [
+    { title: 'Nome', key: 'name' },
+    { title: 'E-mail', key: 'email' },
+    { title: 'RA', key: 'ra' },
+    { title: 'CPF', key: 'cpf' },
+    { title: 'Ações', key: 'actions' },
+  ]
 </script>
 
 <template>
   <v-data-table
+    :headers="headers"
     hide-default-footer
-    item-key="id"
     :items="students"
     :loading="loading"
   >
@@ -35,27 +43,45 @@
         <td>{{ item.ra }}</td>
         <td>{{ item.cpf }}</td>
         <td class="text-center">
-          <v-btn
-            icon="mdi-pencil"
-            size="small"
-            variant="text"
-            @click="emit('edit', item)"
-          />
-          <v-btn
-            color="error"
-            icon="mdi-delete"
-            size="small"
-            variant="text"
-            @click="emit('delete', item)"
-          />
+          <v-speed-dial
+            location="start top"
+            transition="fade-transition"
+          >
+            <template #activator="{ props: activatorProps }">
+              <v-btn
+                v-bind="activatorProps"
+                density="compact"
+                icon="mdi-dots-vertical"
+                variant="text"
+              />
+            </template>
+
+            <v-btn
+              key="edit"
+              size="small"
+              @click="emit('edit', item)"
+            >
+              Editar
+            </v-btn>
+
+            <v-btn
+              key="delete"
+              color="error"
+              size="small"
+              @click="emit('delete', item)"
+            >
+              Excluir
+            </v-btn>
+          </v-speed-dial>
+
         </td>
       </tr>
     </template>
 
     <template #no-data>
-      <span class="text-center pa-4">
+      <div class="text-center pa-4 w-100">
         Nenhum aluno encontrado
-      </span>
+      </div>
     </template>
 
   </v-data-table>
