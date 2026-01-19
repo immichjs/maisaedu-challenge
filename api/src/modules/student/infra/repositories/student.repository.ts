@@ -37,7 +37,7 @@ export class StudentRepository implements IStudentRepository {
 		if (sort) {
 			qb.orderBy(`student.${sort.field}`, sort.direction);
 		} else {
-			qb.orderBy('student.name', 'ASC');
+			qb.orderBy('student.createdAt', 'DESC');
 		}
 
 		qb.skip((page - 1) * perPage).take(perPage);
