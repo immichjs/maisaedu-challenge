@@ -23,6 +23,7 @@ import { SearchStudentsQueryDto } from '../application/dto/search-student-query.
 import { UpdateStudentDto } from '../application/dto/update-student.dto';
 import { CreateStudentUseCase } from '../application/use-cases/create-student.usecase';
 import { DeleteStudentUseCase } from '../application/use-cases/delete-student.usecase';
+import { FindStudentByUseCase } from '../application/use-cases/find-student-by-id.usecase';
 import { SearchStudentsUseCase } from '../application/use-cases/search-students.usecase';
 import { UpdateStudentUseCase } from '../application/use-cases/update-student.usecase';
 import { StudentResponseMapper } from '../infra/mappers/student-response.mapper';
@@ -33,6 +34,7 @@ export class StudentController {
 	constructor(
 		private readonly createStudent: CreateStudentUseCase,
 		private readonly searchStudents: SearchStudentsUseCase,
+		private readonly findStudentById: FindStudentByUseCase,
 		private readonly updateStudent: UpdateStudentUseCase,
 		private readonly deleteStudent: DeleteStudentUseCase,
 	) {}
@@ -72,6 +74,17 @@ export class StudentController {
 			),
 			meta: result.meta,
 		};
+	}
+
+	@Get(':id')
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: 'Get a student by ID' })
+	@ApiParam({ name: 'id', description: 'Student UUID', example: 'uuid-v4' })
+	@ApiResponse({ status: 200, description: 'Student found successfully' })
+	@ApiResponse({ status: 404, description: 'Student not found' })
+	public async findById(@Param('id', new ParseUUIDPipe()) studentId: string) {
+		const student = await this.findStudentById.execute(studentId);
+		return StudentResponseMapper.toDto(student);
 	}
 
 	@Patch(':id')
