@@ -22,7 +22,7 @@ export const studentService = {
     return data
   },
 
-  async create (payload: Omit<IStudent, 'id'>) {
+  async create (payload: Omit<IStudent, 'id' | 'createdAt' | 'updatedAt'>) {
     const { data } = await api.post<IStudent>('/students', payload)
     return data
   },

@@ -88,3 +88,8 @@ A arquitetura segue o conceito de **DDD-Lite**, aplicando os principais conceito
 A funcionalidade de listagem de alunos suporta paginação e busca unificada através do parâmetro `q`, realizando busca parcial e case-insensitive em múltiplos campos (nome, email, RA e CPF), mantendo a API simples e alinhada ao escopo do desafio.
 
 A exclusão de registros foi implementada como **hard delete**, seguindo estritamente o critério de aceite do desafio. Em um cenário de produção, seria recomendada a adoção de soft delete.
+
+A geração do RA foi implementada no frontend utilizando um padrão alfanumérico de 6 caracteres (`^[A-Z0-9]{6}$`) para acelerar a entrega do desafio.
+
+Em um cenário de produção, essa responsabilidade deveria ser transferida para o backend, garantindo unicidade, consistência e evitando possíveis colisões. Essa decisão foi documentada e tomada conscientemente devido à limitação de tempo.
+

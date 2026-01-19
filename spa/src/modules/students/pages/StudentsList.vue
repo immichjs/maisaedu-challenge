@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type { IStudent } from '@/types/IStudent'
-  import { useTheme } from 'vuetify'
   import { studentService } from '@/services/student.service'
   import { useUiStore } from '@/stores/ui.store'
   import StudentDeleteDialog from '../components/StudentDeleteDialog.vue'
@@ -9,7 +8,6 @@
   import StudentsTable from '../components/StudentsTable.vue'
 
   const router = useRouter()
-  const theme = useTheme()
   const uiStore = useUiStore()
 
   const search = ref('')
@@ -112,20 +110,6 @@
 </script>
 
 <template>
-  <v-toolbar>
-    <v-toolbar-title>
-      Consultar alunos
-    </v-toolbar-title>
-
-    <v-switch
-      class="mr-4"
-      density="compact"
-      hide-details
-      label="Tema escuro"
-      @click="theme.toggle()"
-    />
-  </v-toolbar>
-
   <v-container class="px-12 pt-12" fluid>
     <StudentsHeader
       :search="search"

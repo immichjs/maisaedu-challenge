@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { IStudent } from '@/types/IStudent'
+  import { formatCPF } from '@/utils/formatters'
   import StudentActions from './StudentActions.vue'
 
   defineProps<{
@@ -42,7 +43,7 @@
         <td>{{ item.name }}</td>
         <td>{{ item.email }}</td>
         <td>{{ item.ra }}</td>
-        <td>{{ item.cpf }}</td>
+        <td>{{ formatCPF(item.cpf) }}</td>
         <td class="text-center">
           <StudentActions
             :student="item"
