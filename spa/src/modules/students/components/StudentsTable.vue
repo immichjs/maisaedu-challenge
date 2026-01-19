@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { IStudent } from '@/types/IStudent'
+  import StudentActions from './StudentActions.vue'
 
   defineProps<{
     students: IStudent[]
@@ -43,37 +44,11 @@
         <td>{{ item.ra }}</td>
         <td>{{ item.cpf }}</td>
         <td class="text-center">
-          <v-speed-dial
-            location="start top"
-            transition="fade-transition"
-          >
-            <template #activator="{ props: activatorProps }">
-              <v-btn
-                v-bind="activatorProps"
-                density="compact"
-                icon="mdi-dots-vertical"
-                variant="text"
-              />
-            </template>
-
-            <v-btn
-              key="edit"
-              size="small"
-              @click="emit('edit', item)"
-            >
-              Editar
-            </v-btn>
-
-            <v-btn
-              key="delete"
-              color="error"
-              size="small"
-              @click="emit('delete', item)"
-            >
-              Excluir
-            </v-btn>
-          </v-speed-dial>
-
+          <StudentActions
+            :student="item"
+            @delete="emit('delete', $event)"
+            @edit="emit('edit', $event)"
+          />
         </td>
       </tr>
     </template>

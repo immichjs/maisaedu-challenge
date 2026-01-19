@@ -10,7 +10,7 @@ api.interceptors.response.use(
     const message
       = error.response?.data?.message
         || error.response?.data?.error
-        || 'Unexpected error'
+        || 'Servidor indisponível'
 
     return Promise.reject(new Error(message))
   },
